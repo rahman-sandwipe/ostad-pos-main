@@ -1,3 +1,3 @@
 <p class="text-center">
-    <a href="https://youtu.be/5GrNnQSJGaw"></a>
+    Project preview video <a href="https://youtu.be/5GrNnQSJGaw">Click Now</a>
 </p>
