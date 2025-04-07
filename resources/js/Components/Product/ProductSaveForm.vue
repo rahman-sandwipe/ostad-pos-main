@@ -20,19 +20,27 @@
                                 <br />
                                 <input id="unit" name="unit" v-model="form.unit" placeholder="Product Unit"
                                     class="form-control" type="number" />
+                                <br>
+                                <!-- Brand Dropdown -->
+                                <div>
+                                    <label for="brand">Select Brand:</label>
+                                    <select v-model="form.brand_id" class="form-control" id="brand">
+                                        <option value="" disabled>Select a brand</option>
+                                        <option v-for="brand in brands" :key="brand.id" :value="brand.id">{{ brand.name }}</option>
+                                    </select>
+                                </div>
                                 <br />
                                 <!-- Category Dropdown -->
                                 <div>
                                     <label for="category">Select Category:</label>
                                     <select v-model="form.category_id" class="form-control" id="category">
                                         <option value="" disabled>Select a category</option>
-                                    <option v-for="category in categories" :key="category.id" :value="category.id">{{ category.name }}</option>
+                                        <option v-for="category in categories" :key="category.id" :value="category.id">{{ category.name }}</option>
                                     </select>
                                 </div>
                                 <br />
                                 <div>
                                     <label for="image">Product Image:</label> <br>
-                                    <!-- <input type="file" id="image" @change="handleFileUpload" /> -->
                                     <ImageUpload :productImage="form.image" @image="(e)=>form.image = e"/>
                                 </div>
                                 <br />
@@ -56,9 +64,10 @@ import ImageUpload from './ImageUpload.vue'
 const urlParams = new URLSearchParams(window.location.search)
 let id = ref(parseInt(urlParams.get('id')))
 
-const form = useForm({ name: '', price: '', unit: '', category_id: '', image: null, id: id.value || null })
+const form = useForm({ name: '', price: '', unit: '', brand_id: '', category_id: '', image: null, id: id.value || null })
 const page = usePage()
 
+const brands = ref(page.props.brands)
 const categories = ref(page.props.categories)
 
 let URL = "/create-product";
@@ -70,6 +79,7 @@ if (id.value !== 0 && list !== null) {
     form.id = list['id'];
     form.price = list['price'];
     form.unit = list['unit'];
+    form.brand_id = list['brand_id'];
     form.category_id = list['category_id'];
     form.image = list['image'];
 }

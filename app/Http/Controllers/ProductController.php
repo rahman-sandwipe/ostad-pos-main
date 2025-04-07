@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Brand;
 use Exception;
 use Inertia\Inertia;
 use App\Models\Product;
@@ -18,6 +19,7 @@ class ProductController extends Controller
             'name' => 'required',
             'price' => 'required',
             'unit' => 'required',
+            'brand_id' => 'required',
             'category_id' => 'required',
             'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg,webp|max:2048',
         ]);
@@ -26,6 +28,7 @@ class ProductController extends Controller
             'name' => $request->name,
             'price' => $request->price,
             'unit' => $request->unit,
+            'brand_id' => $request->brand_id,
             'category_id' => $request->category_id,
             'user_id' => $user_id
         ];
@@ -34,9 +37,9 @@ class ProductController extends Controller
             $image = $request->file('image');
 
             $fileName = time().'.'.$image->getClientOriginalExtension();
-            $filePath = 'uploads/'.$fileName;
+            $filePath = 'uploads/products/'.$fileName;
 
-            $image->move(public_path('uploads'), $fileName);
+            $image->move(public_path('uploads/products'), $fileName);
             $data['image'] = $filePath;
         }
 
@@ -48,7 +51,7 @@ class ProductController extends Controller
     public function ProductPage(Request $request){
         $user_id = $request->header('id');
         $products = Product::where('user_id', $user_id)
-            ->with('category')->latest()->get();
+            ->with('category','brand')->latest()->get();
         return Inertia::render('ProductPage', ['products' => $products]);
     }//end method
 
@@ -57,7 +60,12 @@ class ProductController extends Controller
         $product_id = $request->query('id');
         $product = Product::where('id',$product_id)->where('user_id',$user_id)->first();
         $categories = Category::where('user_id', $user_id)->get();
-        return Inertia::render('ProductSavePage', ['product' => $product, 'categories' => $categories]);
+        $brands = Brand::where('user_id', $user_id)->get();
+        return Inertia::render('ProductSavePage', [
+            'product' => $product,
+            'brands' => $brands,
+            'categories' => $categories
+        ]);
     }//end method
 
     public function ProductList(Request $request){
@@ -82,6 +90,7 @@ class ProductController extends Controller
             'name' => 'required',
             'price' => 'required',
             'unit' => 'required',
+            'brand_id' => 'required',
             'category_id' => 'required'
         ]);
 
@@ -90,6 +99,7 @@ class ProductController extends Controller
         $product->name = $request->name;
         $product->price = $request->price;
         $product->unit = $request->unit;
+        $product->brand_id = $request->brand_id;
         $product->category_id = $request->category_id;
 
         if($request->hasFile('image')){
@@ -103,9 +113,9 @@ class ProductController extends Controller
             $image = $request->file('image');
 
             $fileName = time().'.'.$image->getClientOriginalExtension();
-            $filePath = 'uploads/'.$fileName;
+            $filePath = 'uploads/products/'.$fileName;
 
-            $image->move(public_path('uploads'), $fileName);
+            $image->move(public_path('uploads/products'), $fileName);
             $product->image = $filePath;
         }
 

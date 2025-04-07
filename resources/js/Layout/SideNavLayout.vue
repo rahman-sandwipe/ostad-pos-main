@@ -17,6 +17,11 @@
                 <span class="side-bar-item-caption">Dashboard</span>
             </Link>
 
+            <Link href="/BrandPage" class="side-bar-item">
+                <span class="side-bar-item-icon"><i class="fa fa-th-list text-green" /></span>
+                <span class="side-bar-item-caption">Brand</span>
+            </Link>
+            
             <Link href="/CategoryPage" class="side-bar-item">
                 <span class="side-bar-item-icon"><i class="fa fa-th-list text-green" /></span>
                 <span class="side-bar-item-caption">Category</span>

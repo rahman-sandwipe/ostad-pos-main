@@ -12,11 +12,15 @@ class Product extends Model
     protected $fillable = [
         'user_id',
         'category_id',
+        'brand_id',
         'name',
         'price',
         'unit',
         'image',
     ];
+    public function brand(){
+        return $this->belongsTo(Brand::class);
+    }
     public function category(){
         return $this->belongsTo(Category::class);
     }

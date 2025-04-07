@@ -73,7 +73,7 @@ class UserController extends Controller
                     $request->session()->put('user_id', $user_id);
 
                     $data = ['message'=>'User login successfully','status'=>true,'error'=>''];
-                    return redirect('/DashboardPage');
+                    return redirect('/DashboardPage')->with($data);
                 }else{
                     $data = ['message'=>'Invalid email or password','status'=>false,'error'=>''];
                     return redirect('/login')->with($data);

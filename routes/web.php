@@ -11,11 +11,7 @@ use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\CustomerController;
 use App\Http\Middleware\SessionAuthenticate;
 use App\Http\Controllers\DashboardController;
-use App\Http\Middleware\TokenVerificationMiddleware;
-
-// Route::get('/', function () {
-//     return view('welcome');
-// });
+use App\Http\Controllers\BrandController;
 
 Route::get('/', [HomeController::class, 'index'])->name('home');
 
@@ -33,6 +29,15 @@ Route::middleware(SessionAuthenticate::class)->group(function(){
 
     Route::get('/DashboardPage', [UserController::class, 'DashboardPage']);
     Route::get('/user-logout', [UserController::class, 'UserLogout']);
+
+    //Brand all routes
+    Route::post('/create-brand', [BrandController::class, 'CreateBrand'])->name('brand.create');
+    Route::get('/list-brand', [BrandController::class, 'BrandList'])->name('brand.list');
+    Route::post('/brand-by-id', [BrandController::class, 'BrandById']);
+    Route::post('/update-brand', [BrandController::class, 'BrandUpdate'])->name('brand.update');
+    Route::get('/delete-brand/{id}', [BrandController::class, 'BrandDelete'])->name('brand.delete');
+    Route::get('/BrandPage', [BrandController::class, 'BrandPage'])->name('BrandPage');
+    Route::get('/BrandSavePage', [BrandController::class, 'BrandSavePage'])->name('BrandSavePage');
 
     //Category all routes
     Route::post('/create-category', [CategoryController::class, 'CreateCategory'])->name('category.create');

@@ -45,7 +45,7 @@
                 onSuccess: () => {
                     if(page.props.flash.status === true){
                         router.get('/DashboardPage');
-                        toaster.success("Login successful");
+                        toaster.success(page.props.flash.message);
                     }else{
                         toaster.error(page.props.flash.message);
                     }
